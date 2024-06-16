@@ -3,17 +3,70 @@
 ## Item 1. template type deduction
 
 
-### Case 1. Reference or pointer
+### Case 1. Param type - Reference or pointer
+
+Rule 1. If expr's type is a reference, ignore the reference part.
+
+Rule 2. Then pattern-match expr's type against Param type to determine T.
+
+#### 1.1 Reference
 
 ```
 template <typename T>
 f(T& param)
+
+int x = 27;
+const int cx = x;
+const int& rx = x;
 ```
 
-lvalue type| T type | param type
+
+expr type | T type | param type
 ----- | ----- | ----- |
 int x | int | int&
------ | ----- | ----- |
 const int cx | const int | const int&
+const int& rx | const int | const int&
+
+#### 1.2 Const reference
+
+```
+template <typename T>
+f(const T& param)
+```
+
+expr type| T type | param type
 ----- | ----- | ----- |
-const int& rx | const int | const int &
+int x | int | const int&
+const int cx | int | const int&
+const int& rx | int | const int&
+
+### 1.3 Pointer
+
+```
+template <typename T>
+f(T* param)
+```
+
+expr type| T type | param type
+----- | ----- | ----- |
+int x | int | int*
+const int cx | const int | const int*
+const int* px | const int | const int*
+
+### Case 2. Param Type - Universal reference
+
+Rule 1. expr is an lvalue &rarr; param type is deduced to be lvalue references.
+
+Rule 2. expr is an rvalue &rarr; Case 1 rules apply.
+
+```
+template <typename T>
+f(T&& param)
+```
+
+expr type| T type | param type
+----- | ----- | ----- |
+int x | int& | int&
+const int cx | const int& | const int&
+const int& rx | const int& | const int&
+27 (rvalue) | int | int&&
