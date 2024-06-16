@@ -10,5 +10,10 @@ template <typename T>
 f(T& param)
 ```
 
-lvalue type| T type | P type
---- | --- | --- |
+lvalue type| T type | param type
+----- | ----- | ----- |
+int x | int | int&
+----- | ----- | ----- |
+const int cx | const int | const int&
+----- | ----- | ----- |
+const int& rx | const int | const int &
