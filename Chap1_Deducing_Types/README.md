@@ -13,7 +13,7 @@ Rule 2. Then pattern-match expr's type against Param type to determine T.
 
 ```
 template <typename T>
-f(T& param)
+void f(T& param)
 
 int x = 27;
 const int cx = x;
@@ -31,7 +31,7 @@ const int& rx | const int | const int&
 
 ```
 template <typename T>
-f(const T& param)
+void f(const T& param)
 ```
 
 expr type| T type | param type
@@ -44,7 +44,7 @@ const int& rx | int | const int&
 
 ```
 template <typename T>
-f(T* param)
+void f(T* param)
 ```
 
 expr type| T type | param type
@@ -61,7 +61,7 @@ Rule 2. expr is an rvalue &rarr; Case 1 rules apply.
 
 ```
 template <typename T>
-f(T&& param)
+void f(T&& param)
 ```
 
 expr type| T type | param type
@@ -79,7 +79,7 @@ Rule 2. After ignoring expr's referenceness, **const** is ignored.
 
 ```
 template <typename T>
-f(T param)
+void f(T param)
 ```
 
 expr type| T type | param type
@@ -94,16 +94,72 @@ Note that the **const** is ignored only for by-value parameters.
 
 When it comes to the last expr type, the constness of what ptr points to is preserved during type deduction, but the constness of ptr itself is ignored when copying it to create the new pointer, param.
 
+### Array Arguments
+
+#### template by-value parameter
+```
+template <typename T>
+void f(T param)
+
+const char name[] = "J. P. Briggs";
+
+const char* ptrToName = name;
+
+f(name);
+```
+
+var | T type |
+---| ---|
+name | const char* |
+
+#### template by-reference parameter
+```
+template <typename T>
+void f(T& param)
+```
+
+var | T type |
+---| ---|
+name | const char (&)[13] |
+
+### Function Arguments
+
+#### template by-value parameter
+```
+void someFunc(int idx, double x);
+
+template <typename T>
+void f(T param)
+```
+
+expression | T type | param type|
+---| --- | --- |
+f(someFunc); | void (*) (int, double)| ptr to func
+
+#### template by-reference parameter
+```
+void someFunc(int idx, double x);
+
+template <typename T>
+void f(T& param)
+```
+
+expression | T type | param type|
+---| --- | --- |
+f(someFunc); | void (&) (int, double)| ref to func
+
+
+
 ## Item 2. auto type deduction
 
 The same rule is applied to auto as the template.
 
-expression | auto type | explanation
---- | --- | --- |
-auto x = 27; | int | neigther pointer or reference
-const auto cx = x; | int | neither pointer or reference
-const auto& rx = x; | const int | reference
-auto&& uref1 = x; | int& | x - lvalue
-auto&& uref2 = cx; | const int& | cx - lvalue
-auto&& uref3 = rx; | const int& | rx - lvalue
-auto&& uref4 = 27; | int&& | 27 - rvalue
+expression | auto type | Case |explanation
+--- | --- | --- | --- |
+auto x = 27; | int | 3 | neigther pointer or reference
+const auto cx = x; | int | 3 | neither pointer or reference
+const auto& rx = x; | const int | 1 | reference
+auto&& uref1 = x; | int& | 2 |x - lvalue
+auto&& uref2 = cx; | const int& | 2 |cx - lvalue
+auto&& uref3 = rx; | const int& | 2 |rx - lvalue
+auto&& uref4 = 27; | int&& | 2 |27 - rvalue
