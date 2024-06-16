@@ -70,3 +70,28 @@ int x | int& | int&
 const int cx | const int& | const int&
 const int& rx | const int& | const int&
 27 (rvalue) | int | int&&
+
+### Case 3. Param Type - value (Pass-by-value)
+
+Rule 1. expr type is a reference &rarr; ignore the reference part.
+
+Rule 2. After ignoring expr's referenceness, **const** is ignored.
+
+```
+template <typename T>
+f(T param)
+```
+
+expr type| T type | param type
+----- | ----- | ----- |
+int x | int | int
+const int cx | int | int
+const int& rx | int | int
+27 (rvalue) | int | int
+const char* const ptr | const char* | const char*
+
+Note that the **const** is ignored only for by-value parameters.
+
+The last expr type 
+
+--> The constness of what ptr points to is preserved during type deduction, but the constness of ptr itself is ignored when copying it to create the new pointer, param.
