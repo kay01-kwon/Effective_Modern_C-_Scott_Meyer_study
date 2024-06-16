@@ -92,6 +92,4 @@ const char* const ptr | const char* | const char*
 
 Note that the **const** is ignored only for by-value parameters.
 
-The last expr type 
-
---> The constness of what ptr points to is preserved during type deduction, but the constness of ptr itself is ignored when copying it to create the new pointer, param.
+When it comes to the last expr type, the constness of what ptr points to is preserved during type deduction, but the constness of ptr itself is ignored when copying it to create the new pointer, param.
