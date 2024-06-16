@@ -163,3 +163,38 @@ auto&& uref1 = x; | int& | 2 |x - lvalue
 auto&& uref2 = cx; | const int& | 2 |cx - lvalue
 auto&& uref3 = rx; | const int& | 2 |rx - lvalue
 auto&& uref4 = 27; | int&& | 2 |27 - rvalue
+
+### Array Arguments
+
+```
+const char name[] = "R. N. Briggs";
+
+auto arr_ptr = name;
+auto& arr_ref = name;
+
+```
+
+var | auto type |
+--- | --- |
+arr_ptr | const char*|
+arr_ref | const char&[13]|
+
+### Function Arguments
+
+```
+void someFunc(int idx, double value)
+
+auto func_ptr = someFunc;
+auto func_ref = someFunc;
+
+// How to use func_ptr and func_ref.
+func_ptr(1,2.3);
+func_ref(2,3.3);
+
+
+```
+
+var | auto type |
+--- | --- |
+func_ptr | void (*)(int, double)|
+func_ref | void (&)(int, double)|

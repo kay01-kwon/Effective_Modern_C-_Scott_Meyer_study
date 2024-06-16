@@ -61,6 +61,10 @@ int main(int argc, char** argv)
     cout<<"4. rvalue \nf(T&& param);\n";
     f_case2(27);
 
+    auto fun1 = somefn;
+
+    fun1(1,1.2);
+
     return EXIT_SUCCESS;
 
 }

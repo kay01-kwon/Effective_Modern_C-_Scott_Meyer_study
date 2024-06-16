@@ -52,4 +52,10 @@ void f_case2(T&& param)
     cout<<type_id_with_cvr<decltype(param)>().pretty_name()<<"\n\n";
 }
 
+void somefn(int idx, double x)
+{
+    cout<<"index: "<<idx<<"\n";
+    cout<<"value: "<<x<<"\n";
+}
+
 #endif
