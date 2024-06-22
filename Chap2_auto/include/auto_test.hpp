@@ -4,12 +4,14 @@
 #include <boost/type_index.hpp>
 #include <unordered_map>
 #include <string>
+#include <vector>
 
 using std::cout;
 using std::endl;
 using boost::typeindex::type_id_with_cvr;
 using std::unordered_map;
 using std::string;
+using std::vector;
 
 // Helper lambda function to print key-value pairs
 
